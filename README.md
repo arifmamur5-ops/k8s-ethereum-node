@@ -40,6 +40,7 @@ kubectl apply -f geth-pvc.yaml
 
 # 4. Deploy the production Geth node
 kubectl apply -f geth-deployment-v2.yaml
+```
 
 ## Verified Setup
 - Hardware: Lenovo V110 (AMD A9, 12GB RAM)
