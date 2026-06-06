@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: geth-config
+data:
+  network: "holesky"
+  syncmode: "snap"
+  http-api: "eth,net,web3,engine,admin"

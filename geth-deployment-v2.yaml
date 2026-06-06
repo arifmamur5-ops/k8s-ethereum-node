@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geth-holesky-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geth-v2
+  template:
+    metadata:
+      labels:
+        app: geth-v2
+    spec:
+      containers:
+      - name: geth
+        image: ethereum/client-go:latest
+        args:
+        - --holesky
+        - --syncmode=$(SYNC_MODE)
+        - --http
+        - --http.addr=0.0.0.0
+        - --http.api=$(HTTP_API)
+        - --authrpc.addr=0.0.0.0
+        - --authrpc.port=8551
+        - --authrpc.vhosts=*
+        - --authrpc.jwtsecret=/secrets/jwt.hex
+        env:
+        - name: SYNC_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: geth-config
+              key: syncmode
+        - name: HTTP_API
+          valueFrom:
+            configMapKeyRef:
+              name: geth-config
+              key: http-api
+        volumeMounts:
+        - name: geth-data
+          mountPath: /root/.ethereum
+        - name: jwt-volume
+          mountPath: /secrets
+      volumes:
+      - name: geth-data
+        persistentVolumeClaim:
+          claimName: geth-data-pvc
+      - name: jwt-volume
+        secret:
+          secretName: jwt-secret
+          items:
+          - key: jwt
+            path: jwt.hex
