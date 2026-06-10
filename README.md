@@ -42,6 +42,11 @@ kubectl apply -f geth-pvc.yaml
 kubectl apply -f geth-deployment-v2.yaml
 ```
 
+# 5. Deploy Networking & Routing components
+kubectl apply -f geth-service-nodeport.yaml
+minikube addons enable ingress
+kubectl apply -f geth-ingress.yaml
+
 ## Verified Setup
 - Hardware: Lenovo V110 (AMD A9, 12GB RAM)
 - OS: Arch Linux
